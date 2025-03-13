@@ -28,6 +28,12 @@ import { MongoCollections } from './models/collections.models';
     MongoDBModule.forCollection(MongoCollections.SERVICES),
     MongoDBModule.forCollection(MongoCollections.SPECIALISTS),
     MongoDBModule.forCollection(MongoCollections.SPECIALISTS_SERVICES),
+    OrganizationRepository,
+    RegistrationRepository,
+    ServiceRepository,
+    SpecialistRepository,
+    SpecialistRepository,
+    UserRepository,
   ],
   exports: [
     OrganizationRepository,
