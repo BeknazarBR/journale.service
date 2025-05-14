@@ -4,6 +4,7 @@ import { InjectCollection } from '../../shared/adapters/mongo';
 import { MongoCollections } from '../models/collections.models';
 import { IOrganizationEntity } from '../entities/organization.entity';
 import { IFindOrgFilter } from '../filters/organization.filters';
+import { IPaginationProps } from '../../shared/pagination/pagination.models';
 
 @Injectable()
 export class OrganizationRepository {
@@ -36,14 +37,21 @@ export class OrganizationRepository {
     return organization;
   }
 
-  public async findMany(): Promise<IOrganizationEntity[]> {
-    const organizations = await this.organizationsCollection.find({}).toArray();
+  public async findMany(
+    props: IPaginationProps<IFindOrgFilter>,
+  ): Promise<IOrganizationEntity[]> {
+    console.log(props.filter);
+    const organizations = await this.organizationsCollection
+      .find(props.filter ?? {})
+      .skip((props.pages.page - 1) * props.pages.limit)
+      .limit(props.pages.limit)
+      .toArray();
 
     return organizations;
   }
 
-  public async count(): Promise<number> {
-    const count = await this.organizationsCollection.countDocuments();
+  public async count(filter?: IFindOrgFilter): Promise<number> {
+    const count = await this.organizationsCollection.countDocuments(filter);
 
     return count;
   }

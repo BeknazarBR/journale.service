@@ -4,4 +4,5 @@ export interface ISpecialistEntity extends IEntityDefaultFields {
   fio: string;
   rating: number;
   photo: string;
+  organization_id: string;
 }

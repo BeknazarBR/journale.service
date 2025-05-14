@@ -5,6 +5,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfig } from './config/jwt.config';
+import { OrganizationsModule } from './modules/organizations/organizations.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { JwtConfig } from './config/jwt.config';
     ConfigModule,
     DatabaseModule,
     AuthModule,
+    OrganizationsModule,
   ],
   providers: [AuthGuard],
 })
