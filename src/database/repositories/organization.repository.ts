@@ -37,7 +37,7 @@ export class OrganizationRepository {
     return organization;
   }
 
-  public async findMany(
+  public async findPaginated(
     props: IPaginationProps<IFindOrgFilter>,
   ): Promise<IOrganizationEntity[]> {
     console.log(props.filter);

@@ -5,6 +5,7 @@ import { MongoCollections } from '../models/collections.models';
 import { IServiceEntity } from '../entities/service.entity';
 import { IServiceFilter } from '../filters/service.filters';
 import { IPaginationProps } from '../../shared/pagination/pagination.models';
+import { filter } from 'rxjs';
 
 @Injectable()
 export class ServiceRepository {
@@ -35,7 +36,7 @@ export class ServiceRepository {
     return service;
   }
 
-  public async findMany(
+  public async findPaginated(
     props: IPaginationProps<IServiceFilter>,
   ): Promise<IServiceEntity[]> {
     const services = await this.servicesCollection
@@ -43,6 +44,12 @@ export class ServiceRepository {
       .skip((props.pages.page - 1) * props.pages.limit)
       .limit(props.pages.limit)
       .toArray();
+
+    return services;
+  }
+
+  public async findMany(filter: IServiceFilter): Promise<IServiceEntity[]> {
+    const services = await this.servicesCollection.find(filter).toArray();
 
     return services;
   }

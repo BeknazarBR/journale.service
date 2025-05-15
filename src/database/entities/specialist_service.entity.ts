@@ -1,7 +1,8 @@
 import { IEntityDefaultFields } from '../models/collections.models';
+import { ObjectId } from 'mongodb';
 
 export interface ISpecialistServiceEntity extends IEntityDefaultFields {
-  specialist_id: string;
-  service_id: string;
+  specialist_id: ObjectId;
+  service_id: ObjectId;
   duration: number;
 }

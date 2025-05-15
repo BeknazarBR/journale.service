@@ -20,6 +20,7 @@ import { FindPaginatedSpecialistRequestDto } from './dtos/find-paginated-special
 import { IPaginatedResponse } from '../../shared/pagination/pagination.models';
 import { AuthGuard } from '../../shared/guards/auth.guard';
 import { ParseObjectIdPipe } from '../../shared/pipes/parse-object-id.pipe';
+import { AssignServiceRequestDto } from './dtos/assign-service-request.dto';
 
 @Controller('specialists')
 export class SpecialistController {
@@ -37,6 +38,19 @@ export class SpecialistController {
     @ExtractUserId() userId: ObjectId,
   ): Promise<ISpecialistResponse> {
     return this.organizationService.createSpecialist({
+      payload,
+      userId,
+    });
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard)
+  @Post('assign-service')
+  public async assignService(
+    @Body() payload: AssignServiceRequestDto,
+    @ExtractUserId() userId: ObjectId,
+  ): Promise<void> {
+    return this.organizationService.assignService({
       payload,
       userId,
     });

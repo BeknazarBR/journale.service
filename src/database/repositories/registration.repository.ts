@@ -36,7 +36,7 @@ export class RegistrationRepository {
     return registration;
   }
 
-  public async findMany(): Promise<IRegistrationEntity[]> {
+  public async findPaginated(): Promise<IRegistrationEntity[]> {
     const registrations = await this.registrationsCollection.find({}).toArray();
 
     return registrations;

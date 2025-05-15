@@ -37,7 +37,7 @@ export class SpecialistRepository {
     return specialist;
   }
 
-  public async findMany(
+  public async findPaginated(
     props: IPaginationProps<ISpecialistFilter>,
   ): Promise<ISpecialistEntity[]> {
     const specialists = await this.specialistsCollection

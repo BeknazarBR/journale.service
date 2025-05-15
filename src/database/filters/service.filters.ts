@@ -1,7 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Filter } from 'mongodb';
+import { IServiceEntity } from '../entities/service.entity';
 
-export interface IServiceFilter {
-  _id?: ObjectId;
-  title?: string;
-  organization_id?: ObjectId;
-}
+export type IServiceFilter = Filter<IServiceEntity>;

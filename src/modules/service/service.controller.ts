@@ -20,6 +20,7 @@ import { FindPaginatedServiceRequestDto } from './dtos/find-paginated-service-re
 import { IPaginatedResponse } from '../../shared/pagination/pagination.models';
 import { AuthGuard } from '../../shared/guards/auth.guard';
 import { ParseObjectIdPipe } from '../../shared/pipes/parse-object-id.pipe';
+import { FindBySpecialistRequestDto } from './dtos/find-by-specialist-request.dto';
 
 @Controller('services')
 export class ServiceController {
@@ -71,5 +72,13 @@ export class ServiceController {
     @Query() request: FindPaginatedServiceRequestDto,
   ): Promise<IPaginatedResponse<IServiceResponse>> {
     return this.serviceService.findPaginated(request);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('list/by-specialist')
+  public async findBySpecialist(
+    @Query() request: FindBySpecialistRequestDto,
+  ): Promise<IPaginatedResponse<IServiceResponse>> {
+    return this.serviceService.findBySpecialist(request);
   }
 }

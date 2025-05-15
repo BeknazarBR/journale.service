@@ -4,6 +4,7 @@ import { InjectCollection } from '../../shared/adapters/mongo';
 import { MongoCollections } from '../models/collections.models';
 import { ISpecialistServiceEntity } from '../entities/specialist_service.entity';
 import { ISpecialistServiceFilter } from '../filters/specialist-service.filters';
+import { IPaginationProps } from '../../shared/pagination/pagination.models';
 
 @Injectable()
 export class SpecialistServiceRepository {
@@ -41,16 +42,21 @@ export class SpecialistServiceRepository {
     return specialistService;
   }
 
-  public async findMany(): Promise<ISpecialistServiceEntity[]> {
+  public async findPaginated(
+    props: IPaginationProps<ISpecialistServiceFilter>,
+  ): Promise<ISpecialistServiceEntity[]> {
     const specialistServices = await this.specialistServicesCollection
-      .find({})
+      .find(props.filter ?? {})
+      .skip((props.pages.page - 1) * props.pages.limit)
+      .limit(props.pages.limit)
       .toArray();
 
     return specialistServices;
   }
 
-  public async count(): Promise<number> {
-    const count = await this.specialistServicesCollection.countDocuments();
+  public async count(filter?: ISpecialistServiceFilter): Promise<number> {
+    const count =
+      await this.specialistServicesCollection.countDocuments(filter);
 
     return count;
   }

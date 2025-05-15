@@ -44,7 +44,7 @@ export class UserRepository {
     return user;
   }
 
-  public async findMany(): Promise<IUserEntity[]> {
+  public async findPaginated(): Promise<IUserEntity[]> {
     const users = await this.usersCollection.find({}).toArray();
 
     return users;

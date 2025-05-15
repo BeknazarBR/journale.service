@@ -1,4 +1,5 @@
 import {
+  IAssignServiceRequest,
   ICreateSpecialistRequest,
   IUpdateSpecialistRequest,
 } from './request.models';
@@ -12,5 +13,10 @@ export interface ICreateSpecialistProps {
 export interface IUpdateSpecialistProps {
   id: ObjectId;
   payload: IUpdateSpecialistRequest;
+  userId: ObjectId;
+}
+
+export interface IAssignServiceProps {
+  payload: IAssignServiceRequest;
   userId: ObjectId;
 }

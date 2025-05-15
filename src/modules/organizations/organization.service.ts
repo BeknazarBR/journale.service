@@ -68,7 +68,7 @@ export class OrganizationService {
           name: request.name,
         }
       : undefined;
-    const orgs = await this.organizationRepository.findMany({
+    const orgs = await this.organizationRepository.findPaginated({
       filter,
       pages: {
         page: request.page,

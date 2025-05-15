@@ -10,6 +10,7 @@ import { MongoDBModule } from '../shared/adapters/mongo';
 import { ConfigModule } from '../config/config.module';
 import { MongoDBConfig } from '../config/mongodb.config';
 import { MongoCollections } from './models/collections.models';
+import { SpecialistServiceRepository } from './repositories/specialist_service.repository';
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { MongoCollections } from './models/collections.models';
     ServiceRepository,
     SpecialistRepository,
     SpecialistRepository,
+    SpecialistServiceRepository,
     UserRepository,
   ],
   exports: [
@@ -41,6 +43,7 @@ import { MongoCollections } from './models/collections.models';
     ServiceRepository,
     SpecialistRepository,
     SpecialistRepository,
+    SpecialistServiceRepository,
     UserRepository,
   ],
 })

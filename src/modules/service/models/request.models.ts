@@ -15,3 +15,6 @@ export interface IUpdateServiceRequest {
 export interface IFindPaginatedRequest extends IPaginationOptions {
   organization_id: ObjectId;
 }
+export interface IFindBySpecialistRequest extends IPaginationOptions {
+  specialist_id: ObjectId;
+}

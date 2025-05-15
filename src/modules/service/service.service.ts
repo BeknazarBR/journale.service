@@ -6,23 +6,30 @@ import {
 import { IServiceResponse } from './models/response.models';
 import { ServiceMapper } from './mappers/service.mapper';
 import { ObjectId } from 'mongodb';
-import { IFindPaginatedRequest } from './models/request.models';
+import {
+  IFindBySpecialistRequest,
+  IFindPaginatedRequest,
+} from './models/request.models';
 import { IPaginatedResponse } from '../../shared/pagination/pagination.models';
 import { OrganizationRepository } from '../../database/repositories/organization.repository';
 import { ISpecialistFilter } from '../../database/filters/specialist.filters';
 import { ServiceRepository } from '../../database/repositories/service.repository';
+import { SpecialistServiceRepository } from '../../database/repositories/specialist_service.repository';
 
 @Injectable()
 export class ServiceService {
   private readonly serviceRepository: ServiceRepository;
   private readonly organizationRepository: OrganizationRepository;
+  private readonly ssRepository: SpecialistServiceRepository;
 
   constructor(
     serviceRepository: ServiceRepository,
     organizationRepository: OrganizationRepository,
+    ssRepository: SpecialistServiceRepository,
   ) {
     this.serviceRepository = serviceRepository;
     this.organizationRepository = organizationRepository;
+    this.ssRepository = ssRepository;
   }
 
   public async createService(
@@ -91,7 +98,7 @@ export class ServiceService {
           organization_id: request.organization_id,
         }
       : undefined;
-    const orgs = await this.serviceRepository.findMany({
+    const orgs = await this.serviceRepository.findPaginated({
       filter,
       pages: {
         page: request.page,
@@ -102,6 +109,33 @@ export class ServiceService {
 
     return {
       items: ServiceMapper.listResponse(orgs),
+      total,
+    };
+  }
+
+  async findBySpecialist(
+    request: IFindBySpecialistRequest,
+  ): Promise<IPaginatedResponse<IServiceResponse>> {
+    const ss = await this.ssRepository.findPaginated({
+      filter: {
+        specialist_id: request.specialist_id,
+      },
+      pages: {
+        page: request.page,
+        limit: request.limit,
+      },
+    });
+    const total = await this.serviceRepository.count({
+      specialist_id: request.specialist_id,
+    });
+    const services = await this.serviceRepository.findMany({
+      _id: {
+        $in: ss.map((ss) => ss.service_id),
+      },
+    });
+
+    return {
+      items: ServiceMapper.listResponse(services),
       total,
     };
   }

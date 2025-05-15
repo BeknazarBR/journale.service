@@ -5,6 +5,8 @@ import {
 import { ObjectId } from 'mongodb';
 import { ISpecialistResponse } from '../models/response.models';
 import { ISpecialistEntity } from '../../../database/entities/specialist.entity';
+import { IAssignServiceRequest } from '../models/request.models';
+import { ISpecialistServiceEntity } from '../../../database/entities/specialist_service.entity';
 
 export class SpecialistMapper {
   public static create(props: ICreateSpecialistData): ISpecialistEntity {
@@ -43,5 +45,19 @@ export class SpecialistMapper {
     specialists: ISpecialistEntity[],
   ): ISpecialistResponse[] {
     return specialists.map((org) => SpecialistMapper.response(org));
+  }
+
+  public static createSS(
+    request: IAssignServiceRequest,
+  ): ISpecialistServiceEntity {
+    const now = new Date();
+    return {
+      _id: new ObjectId(),
+      specialist_id: request.specialist_id,
+      service_id: request.service_id,
+      duration: request.duration,
+      created_at: now,
+      updated_at: now,
+    };
   }
 }
