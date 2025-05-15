@@ -1,4 +1,5 @@
 export interface ISignUpRequest {
+  fio: string;
   email: string;
   password: string;
 }

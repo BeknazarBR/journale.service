@@ -5,6 +5,8 @@ import {
 import { ObjectId } from 'mongodb';
 import { IRegistrationResponse } from '../models/response.models';
 import { IRegistrationEntity } from '../../../database/entities/registration.entity';
+import { ServiceMapper } from '../../service/mappers/service.mapper';
+import { SpecialistMapper } from '../../specialist/mappers/specialist.mapper';
 
 export class RegistrationMapper {
   public static create(props: ICreateRegistrationData): IRegistrationEntity {
@@ -13,6 +15,9 @@ export class RegistrationMapper {
       _id: new ObjectId(),
       user_id: props.userId,
       specialist_service_id: props.payload.specialist_service_id,
+      service: props.service,
+      specialist: props.specialist,
+      duration: props.ss.duration,
       note: props.payload.note,
       time: props.payload.time,
       created_at: now,
@@ -36,6 +41,9 @@ export class RegistrationMapper {
       user_id: registration.user_id.toString(),
       specialist_service_id: registration.specialist_service_id.toString(),
       note: registration.note,
+      duration: registration.duration,
+      service: ServiceMapper.response(registration.service),
+      specialist: SpecialistMapper.response(registration.specialist),
       time: registration.time.toISOString(),
       created_at: registration.created_at.toISOString(),
       updated_at: registration.updated_at.toISOString(),

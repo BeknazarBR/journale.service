@@ -1,5 +1,5 @@
 import { IFindPaginatedRequest } from '../models/request.models';
-import { IsMongoId, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { PaginationOptionsDto } from '../../../shared/pagination/pagination.request';
 import { ObjectId } from 'mongodb';
 import { ObjectIdTransform } from '../../../shared/transforms/object-id.transform';
@@ -10,7 +10,6 @@ export class FindPaginatedServiceRequestDto
   implements IFindPaginatedRequest
 {
   @IsOptional()
-  @IsMongoId()
   @Transform(ObjectIdTransform)
   organization_id: ObjectId;
 }

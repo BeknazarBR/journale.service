@@ -6,6 +6,7 @@ export enum Roles {
 }
 
 export interface IUserEntity extends IEntityDefaultFields {
+  fio: string;
   email: string;
   password: string;
   role: Roles;

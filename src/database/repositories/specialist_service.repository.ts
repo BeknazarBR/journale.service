@@ -54,6 +54,18 @@ export class SpecialistServiceRepository {
     return specialistServices;
   }
 
+  public async findByIds(ids: ObjectId[]): Promise<ISpecialistServiceEntity[]> {
+    const specialistServices = await this.specialistServicesCollection
+      .find({
+        _id: {
+          $in: ids,
+        },
+      })
+      .toArray();
+
+    return specialistServices;
+  }
+
   public async count(filter?: ISpecialistServiceFilter): Promise<number> {
     const count =
       await this.specialistServicesCollection.countDocuments(filter);

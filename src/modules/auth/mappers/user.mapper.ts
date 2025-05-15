@@ -6,6 +6,7 @@ export class UserMapper {
   public static create(request: ISignUpRequest): IUserEntity {
     return {
       _id: new ObjectId(),
+      fio: request.fio,
       email: request.email,
       role: Roles.USER,
       password: request.password,
