@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtConfig } from './config/jwt.config';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { SpecialistModule } from './modules/specialist/specialist.module';
+import { ServiceModule } from './modules/service/service.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SpecialistModule } from './modules/specialist/specialist.module';
     AuthModule,
     OrganizationsModule,
     SpecialistModule,
+    ServiceModule,
   ],
   providers: [AuthGuard],
 })

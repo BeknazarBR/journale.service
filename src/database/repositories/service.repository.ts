@@ -4,6 +4,7 @@ import { InjectCollection } from '../../shared/adapters/mongo';
 import { MongoCollections } from '../models/collections.models';
 import { IServiceEntity } from '../entities/service.entity';
 import { IServiceFilter } from '../filters/service.filters';
+import { IPaginationProps } from '../../shared/pagination/pagination.models';
 
 @Injectable()
 export class ServiceRepository {
@@ -34,14 +35,20 @@ export class ServiceRepository {
     return service;
   }
 
-  public async findMany(): Promise<IServiceEntity[]> {
-    const services = await this.servicesCollection.find({}).toArray();
+  public async findMany(
+    props: IPaginationProps<IServiceFilter>,
+  ): Promise<IServiceEntity[]> {
+    const services = await this.servicesCollection
+      .find(props.filter ?? {})
+      .skip((props.pages.page - 1) * props.pages.limit)
+      .limit(props.pages.limit)
+      .toArray();
 
     return services;
   }
 
-  public async count(): Promise<number> {
-    const count = await this.servicesCollection.countDocuments();
+  public async count(filter?: IServiceFilter): Promise<number> {
+    const count = await this.servicesCollection.countDocuments(filter);
 
     return count;
   }

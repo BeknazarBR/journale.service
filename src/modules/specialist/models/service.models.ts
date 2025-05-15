@@ -4,12 +4,12 @@ import {
 } from './request.models';
 import { ObjectId } from 'mongodb';
 
-export interface ICreateOrgProps {
+export interface ICreateSpecialistProps {
   payload: ICreateSpecialistRequest;
   userId: ObjectId;
 }
 
-export interface IUpdateOrgProps {
+export interface IUpdateSpecialistProps {
   id: ObjectId;
   payload: IUpdateSpecialistRequest;
   userId: ObjectId;

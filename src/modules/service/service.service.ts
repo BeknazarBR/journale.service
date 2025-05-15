@@ -1,33 +1,33 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {
-  ICreateSpecialistProps,
-  IUpdateSpecialistProps,
+  ICreateServiceProps,
+  IUpdateServiceProps,
 } from './models/service.models';
-import { ISpecialistResponse } from './models/response.models';
-import { SpecialistMapper } from './mappers/specialist.mapper';
+import { IServiceResponse } from './models/response.models';
+import { ServiceMapper } from './mappers/service.mapper';
 import { ObjectId } from 'mongodb';
 import { IFindPaginatedRequest } from './models/request.models';
 import { IPaginatedResponse } from '../../shared/pagination/pagination.models';
-import { SpecialistRepository } from '../../database/repositories/specialist.repository';
 import { OrganizationRepository } from '../../database/repositories/organization.repository';
 import { ISpecialistFilter } from '../../database/filters/specialist.filters';
+import { ServiceRepository } from '../../database/repositories/service.repository';
 
 @Injectable()
-export class SpecialistService {
-  private readonly specialistRepository: SpecialistRepository;
+export class ServiceService {
+  private readonly serviceRepository: ServiceRepository;
   private readonly organizationRepository: OrganizationRepository;
 
   constructor(
-    specialistRepository: SpecialistRepository,
+    serviceRepository: ServiceRepository,
     organizationRepository: OrganizationRepository,
   ) {
-    this.specialistRepository = specialistRepository;
+    this.serviceRepository = serviceRepository;
     this.organizationRepository = organizationRepository;
   }
 
-  public async createSpecialist(
-    props: ICreateSpecialistProps,
-  ): Promise<ISpecialistResponse> {
+  public async createService(
+    props: ICreateServiceProps,
+  ): Promise<IServiceResponse> {
     const org = await this.organizationRepository.findOne({
       _id: props.payload.organization_id,
       owner: props.userId,
@@ -37,17 +37,17 @@ export class SpecialistService {
       throw new NotFoundException('Organization not found');
     }
 
-    const specialist = SpecialistMapper.create(props);
+    const specialist = ServiceMapper.create(props);
 
-    await this.specialistRepository.create(specialist);
+    await this.serviceRepository.create(specialist);
 
-    return SpecialistMapper.response(specialist);
+    return ServiceMapper.response(specialist);
   }
 
-  public async updateSpecialist(
-    props: IUpdateSpecialistProps,
-  ): Promise<ISpecialistResponse> {
-    const existed = await this.specialistRepository.findById(props.id);
+  public async updateService(
+    props: IUpdateServiceProps,
+  ): Promise<IServiceResponse> {
+    const existed = await this.serviceRepository.findById(props.id);
 
     if (!existed) {
       throw new NotFoundException(
@@ -63,45 +63,45 @@ export class SpecialistService {
       throw new NotFoundException('Organization not found');
     }
 
-    const updated = SpecialistMapper.update({
+    const updated = ServiceMapper.update({
       existed,
       payload: props.payload,
     });
 
-    await this.specialistRepository.update(updated);
+    await this.serviceRepository.update(updated);
 
-    return SpecialistMapper.response(updated);
+    return ServiceMapper.response(updated);
   }
 
-  async findById(id: ObjectId): Promise<ISpecialistResponse> {
-    const existed = await this.specialistRepository.findById(id);
+  async findById(id: ObjectId): Promise<IServiceResponse> {
+    const existed = await this.serviceRepository.findById(id);
 
     if (!existed) {
       throw new NotFoundException(`Specialist not found: ${id.toString()}`);
     }
 
-    return SpecialistMapper.response(existed);
+    return ServiceMapper.response(existed);
   }
 
   async findPaginated(
     request: IFindPaginatedRequest,
-  ): Promise<IPaginatedResponse<ISpecialistResponse>> {
+  ): Promise<IPaginatedResponse<IServiceResponse>> {
     const filter: ISpecialistFilter | undefined = request.organization_id
       ? {
           organization_id: request.organization_id,
         }
       : undefined;
-    const orgs = await this.specialistRepository.findMany({
+    const orgs = await this.serviceRepository.findMany({
       filter,
       pages: {
         page: request.page,
         limit: request.limit,
       },
     });
-    const total = await this.specialistRepository.count(filter);
+    const total = await this.serviceRepository.count(filter);
 
     return {
-      items: SpecialistMapper.listResponse(orgs),
+      items: ServiceMapper.listResponse(orgs),
       total,
     };
   }
