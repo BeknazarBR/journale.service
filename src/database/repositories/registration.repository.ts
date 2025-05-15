@@ -4,6 +4,7 @@ import { InjectCollection } from '../../shared/adapters/mongo';
 import { MongoCollections } from '../models/collections.models';
 import { IRegistrationEntity } from '../entities/registration.entity';
 import { IRegistrationFilter } from '../filters/registration.filters';
+import { IPaginationProps } from '../../shared/pagination/pagination.models';
 
 @Injectable()
 export class RegistrationRepository {
@@ -36,14 +37,20 @@ export class RegistrationRepository {
     return registration;
   }
 
-  public async findPaginated(): Promise<IRegistrationEntity[]> {
-    const registrations = await this.registrationsCollection.find({}).toArray();
+  public async findPaginated(
+    props: IPaginationProps<IRegistrationFilter>,
+  ): Promise<IRegistrationEntity[]> {
+    const registrations = await this.registrationsCollection
+      .find(props.filter ?? {})
+      .skip((props.pages.page - 1) * props.pages.limit)
+      .limit(props.pages.limit)
+      .toArray();
 
     return registrations;
   }
 
-  public async count(): Promise<number> {
-    const count = await this.registrationsCollection.countDocuments();
+  public async count(filter?: IRegistrationFilter): Promise<number> {
+    const count = await this.registrationsCollection.countDocuments(filter);
 
     return count;
   }

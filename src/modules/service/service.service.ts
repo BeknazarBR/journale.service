@@ -3,7 +3,7 @@ import {
   ICreateServiceProps,
   IUpdateServiceProps,
 } from './models/service.models';
-import { IServiceResponse } from './models/response.models';
+import { IServiceResponse, ISSResponse } from './models/response.models';
 import { ServiceMapper } from './mappers/service.mapper';
 import { ObjectId } from 'mongodb';
 import {
@@ -15,6 +15,7 @@ import { OrganizationRepository } from '../../database/repositories/organization
 import { ISpecialistFilter } from '../../database/filters/specialist.filters';
 import { ServiceRepository } from '../../database/repositories/service.repository';
 import { SpecialistServiceRepository } from '../../database/repositories/specialist_service.repository';
+import { SpecialistServiceMapper } from './mappers/specialist-service.mapper';
 
 @Injectable()
 export class ServiceService {
@@ -115,7 +116,7 @@ export class ServiceService {
 
   async findBySpecialist(
     request: IFindBySpecialistRequest,
-  ): Promise<IPaginatedResponse<IServiceResponse>> {
+  ): Promise<IPaginatedResponse<ISSResponse>> {
     const ss = await this.ssRepository.findPaginated({
       filter: {
         specialist_id: request.specialist_id,
@@ -135,7 +136,10 @@ export class ServiceService {
     });
 
     return {
-      items: ServiceMapper.listResponse(services),
+      items: SpecialistServiceMapper.listResponse({
+        ss,
+        services,
+      }),
       total,
     };
   }

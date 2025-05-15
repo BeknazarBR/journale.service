@@ -8,6 +8,7 @@ import { JwtConfig } from './config/jwt.config';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { SpecialistModule } from './modules/specialist/specialist.module';
 import { ServiceModule } from './modules/service/service.module';
+import { RegistrationModule } from './modules/reigstration/registration.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ServiceModule } from './modules/service/service.module';
     OrganizationsModule,
     SpecialistModule,
     ServiceModule,
+    RegistrationModule,
   ],
   providers: [AuthGuard],
 })

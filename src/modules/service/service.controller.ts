@@ -14,7 +14,7 @@ import { ServiceService } from './service.service';
 import { CreateServiceRequestDto } from './dtos/create-service-request.dto';
 import { ExtractUserId } from '../../shared/decorators/extract-user-id.decorator';
 import { ObjectId } from 'mongodb';
-import { IServiceResponse } from './models/response.models';
+import { IServiceResponse, ISSResponse } from './models/response.models';
 import { UpdateServiceRequestDto } from './dtos/update-service-request.dto';
 import { FindPaginatedServiceRequestDto } from './dtos/find-paginated-service-request.dto';
 import { IPaginatedResponse } from '../../shared/pagination/pagination.models';
@@ -78,7 +78,7 @@ export class ServiceController {
   @Get('list/by-specialist')
   public async findBySpecialist(
     @Query() request: FindBySpecialistRequestDto,
-  ): Promise<IPaginatedResponse<IServiceResponse>> {
+  ): Promise<IPaginatedResponse<ISSResponse>> {
     return this.serviceService.findBySpecialist(request);
   }
 }

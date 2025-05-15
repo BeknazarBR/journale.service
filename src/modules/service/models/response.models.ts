@@ -7,3 +7,9 @@ export interface IServiceResponse {
   created_at: string;
   updated_at: string;
 }
+
+export interface ISSResponse {
+  _id: string;
+  duration: number;
+  service: IServiceResponse;
+}

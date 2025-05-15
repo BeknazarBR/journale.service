@@ -1,6 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Filter } from 'mongodb';
+import { IRegistrationEntity } from '../entities/registration.entity';
 
-export interface IRegistrationFilter {
-  _id: ObjectId;
-  name: string;
-}
+export type IRegistrationFilter = Filter<IRegistrationEntity>;
