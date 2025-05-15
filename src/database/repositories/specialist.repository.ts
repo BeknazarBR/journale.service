@@ -4,13 +4,14 @@ import { InjectCollection } from '../../shared/adapters/mongo';
 import { MongoCollections } from '../models/collections.models';
 import { ISpecialistEntity } from '../entities/specialist.entity';
 import { ISpecialistFilter } from '../filters/specialist.filters';
+import { IPaginationProps } from '../../shared/pagination/pagination.models';
 
 @Injectable()
 export class SpecialistRepository {
   private readonly specialistsCollection: Collection<ISpecialistEntity>;
 
   constructor(
-    @InjectCollection(MongoCollections.ORGANIZATIONS)
+    @InjectCollection(MongoCollections.SPECIALISTS)
     specialistsCollection: Collection<ISpecialistEntity>,
   ) {
     this.specialistsCollection = specialistsCollection;
@@ -36,14 +37,20 @@ export class SpecialistRepository {
     return specialist;
   }
 
-  public async findMany(): Promise<ISpecialistEntity[]> {
-    const specialists = await this.specialistsCollection.find({}).toArray();
+  public async findMany(
+    props: IPaginationProps<ISpecialistFilter>,
+  ): Promise<ISpecialistEntity[]> {
+    const specialists = await this.specialistsCollection
+      .find(props.filter ?? {})
+      .skip((props.pages.page - 1) * props.pages.limit)
+      .limit(props.pages.limit)
+      .toArray();
 
     return specialists;
   }
 
-  public async count(): Promise<number> {
-    const count = await this.specialistsCollection.countDocuments();
+  public async count(filter?: ISpecialistFilter): Promise<number> {
+    const count = await this.specialistsCollection.countDocuments(filter);
 
     return count;
   }

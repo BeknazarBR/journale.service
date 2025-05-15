@@ -10,7 +10,7 @@ export class ServiceRepository {
   private readonly servicesCollection: Collection<IServiceEntity>;
 
   constructor(
-    @InjectCollection(MongoCollections.ORGANIZATIONS)
+    @InjectCollection(MongoCollections.SERVICES)
     servicesCollection: Collection<IServiceEntity>,
   ) {
     this.servicesCollection = servicesCollection;

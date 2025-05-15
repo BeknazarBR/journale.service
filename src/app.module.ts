@@ -6,6 +6,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfig } from './config/jwt.config';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
+import { SpecialistModule } from './modules/specialist/specialist.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     DatabaseModule,
     AuthModule,
     OrganizationsModule,
+    SpecialistModule,
   ],
   providers: [AuthGuard],
 })

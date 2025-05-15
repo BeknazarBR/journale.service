@@ -10,7 +10,7 @@ export class SpecialistServiceRepository {
   private readonly specialistServicesCollection: Collection<ISpecialistServiceEntity>;
 
   constructor(
-    @InjectCollection(MongoCollections.ORGANIZATIONS)
+    @InjectCollection(MongoCollections.SPECIALISTS_SERVICES)
     specialistServicesCollection: Collection<ISpecialistServiceEntity>,
   ) {
     this.specialistServicesCollection = specialistServicesCollection;

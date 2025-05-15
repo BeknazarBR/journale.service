@@ -10,7 +10,7 @@ export class RegistrationRepository {
   private readonly registrationsCollection: Collection<IRegistrationEntity>;
 
   constructor(
-    @InjectCollection(MongoCollections.ORGANIZATIONS)
+    @InjectCollection(MongoCollections.REGISTRATIONS)
     registrationsCollection: Collection<IRegistrationEntity>,
   ) {
     this.registrationsCollection = registrationsCollection;
