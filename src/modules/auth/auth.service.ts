@@ -51,6 +51,7 @@ export class AuthService {
   }
 
   public async signIn(request: ISignInRequest): Promise<ISignInResponse> {
+    console.log(request);
     const user = await this.usersRepository.findByEmail(request.email);
 
     if (!user) {
@@ -70,7 +71,7 @@ export class AuthService {
       sub: user._id.toString(),
       email: user.email,
     });
-
+    console.log(accessToken);
     return {
       access_token: accessToken,
     };

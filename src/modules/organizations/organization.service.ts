@@ -62,6 +62,7 @@ export class OrganizationService {
 
   async findPaginated(
     request: IFindPaginatedRequest,
+    userId: ObjectId,
   ): Promise<IPaginatedResponse<IOrgResponse>> {
     const filter = request.name
       ? {
@@ -78,7 +79,7 @@ export class OrganizationService {
     const total = await this.organizationRepository.count(filter);
 
     return {
-      items: OrgMapper.listResponse(orgs),
+      items: OrgMapper.listResponse(orgs, userId),
       total,
     };
   }

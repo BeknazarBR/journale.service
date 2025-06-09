@@ -13,4 +13,5 @@ export interface IUpdateRegistrationRequest {
 }
 export interface IFindPaginatedRequest extends IPaginationOptions {
   title: string;
+  org_id?: ObjectId;
 }

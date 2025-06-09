@@ -17,6 +17,7 @@ import { IRegistrationFilter } from '../../database/filters/registration.filters
 import { SpecialistServiceRepository } from '../../database/repositories/specialist_service.repository';
 import { ServiceRepository } from '../../database/repositories/service.repository';
 import { SpecialistRepository } from '../../database/repositories/specialist.repository';
+import { UserRepository } from '../../database/repositories/user.repository';
 
 @Injectable()
 export class RegistrationService {
@@ -24,17 +25,19 @@ export class RegistrationService {
   private readonly ssRepository: SpecialistServiceRepository;
   private readonly serviceRepository: ServiceRepository;
   private readonly specialistRepository: SpecialistRepository;
-
+  private readonly userRepository: UserRepository;
   constructor(
     organizationRepository: RegistrationRepository,
     ssRepository: SpecialistServiceRepository,
     serviceRepository: ServiceRepository,
     specialistRepository: SpecialistRepository,
+    userRepository: UserRepository,
   ) {
     this.registrationRepository = organizationRepository;
     this.ssRepository = ssRepository;
     this.serviceRepository = serviceRepository;
     this.specialistRepository = specialistRepository;
+    this.userRepository = userRepository;
   }
 
   public async createRegistration(
@@ -56,11 +59,15 @@ export class RegistrationService {
     if (!service || !specialist) {
       throw new NotFoundException('No specialist service found');
     }
-
+    const user = await this.userRepository.findById(props.userId);
+    if (!user) {
+      throw new NotFoundException()
+    }
     const reg = RegistrationMapper.create({
       service,
       specialist,
       ss,
+      user,
       userId: props.userId,
       payload: props.payload,
     });
@@ -114,6 +121,39 @@ export class RegistrationService {
 
     if (props.request.title) {
       filter.title = props.request.title;
+    }
+
+    if (props.request.org_id) {
+      filter['service.organization_id'] = props.request.org_id;
+    }
+
+    const registrations = await this.registrationRepository.findPaginated({
+      filter,
+      pages: {
+        page: props.request.page,
+        limit: props.request.limit,
+      },
+    });
+
+    const total = await this.registrationRepository.count(filter);
+
+    return {
+      items: RegistrationMapper.listResponse(registrations),
+      total,
+    };
+  }
+
+  async findMyPaginated(
+    props: IFindRegistrationsProps,
+  ): Promise<IPaginatedResponse<IRegistrationResponse>> {
+    const filter: IRegistrationFilter = {};
+
+    if (props.request.title) {
+      filter.title = props.request.title;
+    }
+
+    if (props.request.org_id) {
+      filter['service.organization_id'] = props.request.org_id;
     }
 
     const registrations = await this.registrationRepository.findPaginated({

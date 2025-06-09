@@ -14,6 +14,7 @@ export class RegistrationMapper {
     return {
       _id: new ObjectId(),
       user_id: props.userId,
+      user: props.user,
       specialist_service_id: props.payload.specialist_service_id,
       service: props.service,
       specialist: props.specialist,
@@ -39,6 +40,7 @@ export class RegistrationMapper {
     return {
       _id: registration._id.toString(),
       user_id: registration.user_id.toString(),
+      user: registration.user,
       specialist_service_id: registration.specialist_service_id.toString(),
       note: registration.note,
       duration: registration.duration,

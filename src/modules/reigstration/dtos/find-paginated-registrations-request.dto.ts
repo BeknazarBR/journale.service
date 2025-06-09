@@ -1,6 +1,9 @@
 import { IFindPaginatedRequest } from '../models/request.models';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PaginationOptionsDto } from '../../../shared/pagination/pagination.request';
+import { Transform } from 'class-transformer';
+import { ObjectIdTransform } from '../../../shared/transforms/object-id.transform';
+import { ObjectId } from 'mongodb';
 
 export class FindPaginatedRegistrationsRequestDto
   extends PaginationOptionsDto
@@ -9,4 +12,8 @@ export class FindPaginatedRegistrationsRequestDto
   @IsOptional()
   @IsString()
   title: string;
+
+  @IsOptional()
+  @Transform(ObjectIdTransform)
+  org_id?: ObjectId;
 }

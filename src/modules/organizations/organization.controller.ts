@@ -66,10 +66,12 @@ export class OrganizationController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
   @Get()
   public async findPaginated(
     @Query() request: FindPaginatedOrgsRequestDto,
+    @ExtractUserId() userId: ObjectId,
   ): Promise<IPaginatedResponse<IOrgResponse>> {
-    return this.organizationService.findPaginated(request);
+    return this.organizationService.findPaginated(request, userId);
   }
 }

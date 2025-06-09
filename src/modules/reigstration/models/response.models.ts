@@ -1,7 +1,10 @@
+import { IUserEntity } from '../../../database/entities/user.entity';
+
 export interface IRegistrationResponse {
   _id: string;
   user_id: string;
   specialist_service_id: string;
+  user: IUserEntity;
   service: IServiceResponse;
   specialist: ISpecialistResponse;
   duration: number;

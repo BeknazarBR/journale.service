@@ -77,4 +77,17 @@ export class RegistrationController {
       userId,
     });
   }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Get('org/appointments')
+  public async findMyPaginated(
+    @Query() request: FindPaginatedRegistrationsRequestDto,
+    @ExtractUserId() userId: ObjectId,
+  ): Promise<IPaginatedResponse<IRegistrationResponse>> {
+    return this.registrationService.findMyPaginated({
+      request,
+      userId,
+    });
+  }
 }

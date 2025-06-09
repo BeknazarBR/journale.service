@@ -25,11 +25,10 @@ export class OrgMapper {
     };
   }
 
-  public static response(org: IOrganizationEntity): IOrgResponse {
+  public static response(org: IOrganizationEntity, userId?: ObjectId): IOrgResponse {
     return {
       _id: org._id.toString(),
-      // TODO: make owner response
-      // owner: org._id.toString(),
+      isOwner: userId ? userId?.equals(org.owner) : false,
       name: org.name,
       description: org.description,
       location: org.location,
@@ -38,7 +37,7 @@ export class OrgMapper {
     };
   }
 
-  public static listResponse(orgs: IOrganizationEntity[]): IOrgResponse[] {
-    return orgs.map((org) => OrgMapper.response(org));
+  public static listResponse(orgs: IOrganizationEntity[], userId?: ObjectId): IOrgResponse[] {
+    return orgs.map((org) => OrgMapper.response(org, userId));
   }
 }
