@@ -4,6 +4,6 @@ import { ObjectId } from 'mongodb';
 export interface ISpecialistEntity extends IEntityDefaultFields {
   fio: string;
   rating: number;
-  photo: string;
+  photo?: string;
   organization_id: ObjectId;
 }

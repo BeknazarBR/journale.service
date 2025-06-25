@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 export interface ICreateSpecialistRequest {
   fio: string;
-  photo: string;
+  photo?: string;
   organization_id: ObjectId;
 }
 export interface IUpdateSpecialistRequest {

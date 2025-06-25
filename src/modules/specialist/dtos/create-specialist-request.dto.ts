@@ -1,5 +1,5 @@
 import { ICreateSpecialistRequest } from '../models/request.models';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ObjectId } from 'mongodb';
 import { Transform } from 'class-transformer';
 import { ObjectIdTransform } from '../../../shared/transforms/object-id.transform';
@@ -9,9 +9,9 @@ export class CreateSpecialistRequestDto implements ICreateSpecialistRequest {
   @IsString()
   fio: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  photo: string;
+  photo?: string;
 
   @IsNotEmpty()
   @Transform(ObjectIdTransform)
